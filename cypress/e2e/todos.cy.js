@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+chai.config.truncateThreshold = 0
+
 describe('Todos', { rest: { todos: 'todos.json' } }, () => {
   beforeEach(() => {
     cy.visit('app/index.html')
@@ -84,5 +86,23 @@ describe('Todos', { rest: { todos: 'todos.json' } }, () => {
     cy.log('reload the page')
     cy.reload()
     cy.get('li.todo').first().should('have.class', 'completed')
+  })
+
+  it('supports GET /:id', () => {
+    const todos = Cypress.env('todos')
+    const firstItemId = todos[0].id
+    expect(firstItemId, 'first item id').to.be.a('string')
+    // perform the request using the same fetch API
+    // as the application does which cy.intercept() sees
+    cy.window()
+      .invokeOnce('fetch', `/todos/${firstItemId}`)
+      .as('firstItem')
+      .its('status', { timeout: 0 })
+      .should('eq', 200)
+
+    cy.log('response body')
+    cy.get('@firstItem')
+      .invokeOnce('json')
+      .should('deep.equal', todos[0])
   })
 })

@@ -18,7 +18,15 @@ beforeEach(function prepareRestApi() {
         req.reply(200, data),
       ).as(`get${resourceNameCapitalized}`)
 
-      // TODO: add GET /:id
+      // add GET /:id
+      cy.intercept('GET', resourceName + '/*', (req) => {
+        const id = req.url.split('/').pop()
+        const item = data.find((item) => item.id === id)
+        if (!item) {
+          return req.reply(404)
+        }
+        req.reply(200, item)
+      }).as(`get${resourceNameCapitalized}ById`)
 
       // POST resources
       cy.intercept('POST', resourceName, (req) => {

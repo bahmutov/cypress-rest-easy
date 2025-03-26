@@ -20,15 +20,19 @@ import 'cypress-rest-easy'
 Declare the REST endpoints in the `describe` / `it` configuration block
 
 ```js
+// "todos.json" is a Cypress fixture file
 describe('Todos', { rest: { todos: 'todos.json' } }, () => {
   // each test will have mock backend with the following endpoints
   // GET /todos
+  // GEt /todos/:id
   // POST /todos
   // DELETE /todos/:id
   // PATCH /todos/:id
 ```
 
-See [todos.cy.js](./cypress/e2e/todos.cy.js) for examples
+The fixture file should be probably an array of items
+
+See [todos.cy.js](./cypress/e2e/todos.cy.js) and [todos.json](./cypress/fixtures/todos.json) for examples
 
 ## Small print
 
