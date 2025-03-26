@@ -68,7 +68,8 @@
               <input
                 class="toggle"
                 type="checkbox"
-                v-model="todo.completed"
+                :checked="todo.completed"
+                @change="$store.dispatch('updateTodo', { ...todo, completed: !todo.completed })"
               />
               <label>{{ todo.title }}</label>
               <button

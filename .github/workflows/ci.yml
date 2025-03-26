@@ -1,7 +1,7 @@
 name: ci
 on: push
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎

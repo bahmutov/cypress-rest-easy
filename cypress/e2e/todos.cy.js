@@ -42,6 +42,10 @@ describe('Todos', { rest: { todos: 'todos.json' } }, () => {
         .to.be.an('array')
         .and.have.length(4)
     })
+
+    cy.log('reload the page')
+    cy.reload()
+    cy.get('li.todo').should('have.length', 4)
   })
 
   it('allows accessing individual items', () => {
@@ -56,5 +60,29 @@ describe('Todos', { rest: { todos: 'todos.json' } }, () => {
         // the same dats array is modified
         expect(todos).to.be.an('array').and.have.length(2)
       })
+  })
+
+  it('supports PATCH', () => {
+    cy.get('li.todo').first().find('.toggle').click()
+    cy.get('li.todo').first().should('have.class', 'completed')
+    cy.wait('@patchTodos')
+      .its('response.statusCode')
+      .should('eq', 204)
+    cy.get('@patchTodos')
+      .its('request.body')
+      .should('deep.include', {
+        completed: true,
+      })
+      .then(() => {
+        const todos = Cypress.env('todos')
+        expect(todos, 'todos array')
+          .to.be.an('array')
+          .and.have.length(3)
+        expect(todos[0].completed, 'first todo completed').to.be.true
+      })
+
+    cy.log('reload the page')
+    cy.reload()
+    cy.get('li.todo').first().should('have.class', 'completed')
   })
 })

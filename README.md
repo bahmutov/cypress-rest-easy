@@ -25,6 +25,7 @@ describe('Todos', { rest: { todos: 'todos.json' } }, () => {
   // GET /todos
   // POST /todos
   // DELETE /todos/:id
+  // PATCH /todos/:id
 ```
 
 See [todos.cy.js](./cypress/e2e/todos.cy.js) for examples
