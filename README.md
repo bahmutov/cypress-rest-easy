@@ -17,6 +17,8 @@ import 'cypress-rest-easy'
 
 ## Use
 
+### rest
+
 Declare the REST endpoints in the `describe` / `it` configuration block
 
 ```js
@@ -30,9 +32,26 @@ describe('Todos', { rest: { todos: 'todos.json' } }, () => {
   // PATCH /todos/:id
 ```
 
-The fixture file should be probably an array of items
+The above syntax creates automatic intercepts with aliases:
+
+![Automatic mocks](./images/rest.png)
+
+The fixture file should be an array of items.
 
 See [todos.cy.js](./cypress/e2e/todos.cy.js) and [todos.json](./cypress/fixtures/todos.json) for examples
+
+### baseUrl
+
+If all your REST endpoints use the same prefix, you can set the `baseUrl` option
+
+```js
+describe(
+  'Todos with base URL',
+  { rest: { baseUrl: '/api/v1', todos: 'todos.json' } },
+  () => {
+```
+
+![Base URL option routes](./images/base-url.png)
 
 ## Small print
 

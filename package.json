@@ -23,6 +23,7 @@
   "devDependencies": {
     "cypress": "^14.2.1",
     "cypress-map": "^1.46.0",
+    "cypress-plugin-steps": "^1.2.0",
     "prettier": "^3.5.3",
     "semantic-release": "^24.2.3"
   },

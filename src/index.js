@@ -4,7 +4,18 @@ beforeEach(function prepareRestApi() {
     return
   }
 
+  const baseUrl = rest.baseUrl || ''
+
   Cypress._.each(rest, (fixtureName, resourceName) => {
+    if (resourceName === 'baseUrl') {
+      // skip system options
+      return
+    }
+
+    const resourcePrefix = baseUrl
+      ? `${baseUrl}/${resourceName}`
+      : resourceName
+
     cy.fixture(fixtureName).then((data) => {
       // store the reference to the data in the Cypress env object
       Cypress.env(resourceName, data)
@@ -14,12 +25,12 @@ beforeEach(function prepareRestApi() {
         resourceName.charAt(0).toUpperCase() + resourceName.slice(1)
 
       // GET resources
-      cy.intercept('GET', resourceName, (req) =>
+      cy.intercept('GET', resourcePrefix, (req) =>
         req.reply(200, data),
       ).as(`get${resourceNameCapitalized}`)
 
       // add GET /:id
-      cy.intercept('GET', resourceName + '/*', (req) => {
+      cy.intercept('GET', resourcePrefix + '/*', (req) => {
         const id = req.url.split('/').pop()
         const item = data.find((item) => item.id === id)
         if (!item) {
@@ -29,14 +40,14 @@ beforeEach(function prepareRestApi() {
       }).as(`get${resourceNameCapitalized}ById`)
 
       // POST resources
-      cy.intercept('POST', resourceName, (req) => {
+      cy.intercept('POST', resourcePrefix, (req) => {
         const item = req.body
         // modify the id?
         data.push(item)
         req.reply(201, item)
       }).as(`post${resourceNameCapitalized}`)
 
-      cy.intercept('DELETE', resourceName + '/*', (req) => {
+      cy.intercept('DELETE', resourcePrefix + '/*', (req) => {
         const id = req.url.split('/').pop()
         // modify the dats in place so that any existing
         // array references will see the change
@@ -48,7 +59,7 @@ beforeEach(function prepareRestApi() {
       }).as(`delete${resourceNameCapitalized}`)
 
       // PATCH resources
-      cy.intercept('PATCH', resourceName + '/*', (req) => {
+      cy.intercept('PATCH', resourcePrefix + '/*', (req) => {
         const id = req.url.split('/').pop()
         const index = data.findIndex((item) => item.id === id)
         if (index === -1) {
