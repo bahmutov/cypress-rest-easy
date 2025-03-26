@@ -40,6 +40,38 @@ The fixture file should be an array of items.
 
 See [todos.cy.js](./cypress/e2e/todos.cy.js) and [todos.json](./cypress/fixtures/todos.json) for examples
 
+The mocks and data are reset before each test.
+
+### data access
+
+You can get the "live" data for each resource by name, for example
+
+```js
+it('adds a todo', { rest: { todos: 'todos.json' } }, () => {
+  // use the REST resource name
+  const todos = Cypress.env('todos')
+  const n = todos.length
+  cy.visit('/')
+  cy.get('li.todo').should('have.length', n)
+  cy.get('input.new-todo')
+    .type('Write tests{enter}')
+    // there should be one more item in the array
+    .then(() => {
+      expect(todos).to.have.length(n + 1)
+    })
+})
+```
+
+You need `cy.then` to access the changed data _after_ Cypress commands have finished. Alternatively, you can wrap the array reference:
+
+```js
+cy.get('input.new-todo')
+  .type('Write tests{enter}')
+// there should be one more item in the array
+cy.wrap(todos)
+  .should('have.length', n + 1)
+```
+
 ### baseUrl
 
 If all your REST endpoints use the same prefix, you can set the `baseUrl` option
