@@ -12,9 +12,15 @@ beforeEach(function prepareRestApi() {
       // conver the first letter to uppercase
       const resourceNameCapitalized =
         resourceName.charAt(0).toUpperCase() + resourceName.slice(1)
-      cy.intercept('GET', resourceName, data).as(
-        `get${resourceNameCapitalized}`,
-      )
+
+      // GET resources
+      cy.intercept('GET', resourceName, (req) =>
+        req.reply(200, data),
+      ).as(`get${resourceNameCapitalized}`)
+
+      // TODO: add GET /:id
+
+      // POST resources
       cy.intercept('POST', resourceName, (req) => {
         const item = req.body
         // modify the id?
@@ -32,6 +38,21 @@ beforeEach(function prepareRestApi() {
         }
         req.reply(204)
       }).as(`delete${resourceNameCapitalized}`)
+
+      // PATCH resources
+      cy.intercept('PATCH', resourceName + '/*', (req) => {
+        const id = req.url.split('/').pop()
+        const index = data.findIndex((item) => item.id === id)
+        if (index === -1) {
+          return req.reply(404)
+        }
+        if (index >= data.length) {
+          return req.reply(404)
+        }
+
+        Object.assign(data[index], req.body)
+        req.reply(204)
+      }).as(`patch${resourceNameCapitalized}`)
     })
   })
 })

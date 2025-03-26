@@ -47,6 +47,14 @@ function appStart() {
         let todos = state.todos
         todos.splice(todos.indexOf(todo), 1)
       },
+      UPDATE_TODO(state, updatedTodo) {
+        const index = state.todos.findIndex(
+          (todo) => todo.id === updatedTodo.id,
+        )
+        if (index !== -1) {
+          state.todos.splice(index, 1, updatedTodo)
+        }
+      },
       CLEAR_NEW_TODO(state) {
         state.newTodo = ''
       },
@@ -120,6 +128,11 @@ function appStart() {
           await axios.delete(`/todos/${todo.id}`)
         }
         commit('SET_TODOS', remainingTodos)
+      },
+      updateTodo({ commit }, todo) {
+        axios.patch(`/todos/${todo.id}`, todo).then(() => {
+          commit('UPDATE_TODO', todo)
+        })
       },
       clearNewTodo({ commit }) {
         commit('CLEAR_NEW_TODO')
