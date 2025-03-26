@@ -24,4 +24,37 @@ describe('Todos', { rest: { todos: 'todos.json' } }, () => {
       .should('be.a', 'string')
     cy.get('li.todo').should('have.length', 4)
   })
+
+  it('resets the REST response', () => {
+    cy.fixture('todos').then((todos) => {
+      cy.get('li.todo').should('have.length', todos.length)
+    })
+  })
+
+  it('sets the resource data in the env object', () => {
+    expect(Cypress.env('todos')).to.be.an('array').and.have.length(3)
+  })
+
+  it('modifies the data when adding a todo', () => {
+    cy.get('input.new-todo').type('Buy milk{enter}')
+    cy.wait('@postTodos').then(() => {
+      expect(Cypress.env('todos'))
+        .to.be.an('array')
+        .and.have.length(4)
+    })
+  })
+
+  it('allows accessing individual items', () => {
+    const todos = Cypress.env('todos')
+    cy.get('li.todo').first().find('.destroy').invoke('show').click()
+    cy.wait('@deleteTodos')
+      .its('response.statusCode')
+      .should('eq', 204)
+    cy.get('li.todo')
+      .should('have.length', 2)
+      .then(() => {
+        // the same dats array is modified
+        expect(todos).to.be.an('array').and.have.length(2)
+      })
+  })
 })
