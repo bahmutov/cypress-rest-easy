@@ -1,15 +1,24 @@
 {
-  "name": "cypress-resolved-config",
+  "name": "cypress-rest-easy",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Quickly creates REST mocks for your Cypress tests",
+  "main": "src/index.js",
+  "files": [
+    "src"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cypress run",
     "cy:open": "cypress open"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "cypress-plugin",
+    "cypress",
+    "rest",
+    "mock",
+    "api"
+  ],
+  "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
+  "license": "MIT",
   "devDependencies": {
     "cypress": "^14.2.1",
     "prettier": "^3.5.3"
