@@ -19,7 +19,11 @@ beforeEach(function prepareRestApi() {
       ? `${baseUrl}/${resourceName}`
       : resourceName
 
-    cy.fixture(fixtureName).then((data) => {
+    const loadData = Array.isArray(fixtureName)
+      ? cy.wrap(fixtureName, { log: false })
+      : cy.fixture(fixtureName, { log: false })
+
+    loadData.then((data) => {
       // store the reference to the data in the Cypress env object
       Cypress.env(resourceName, data)
 
