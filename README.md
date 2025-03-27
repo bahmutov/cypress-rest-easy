@@ -2,6 +2,8 @@
 
 > Quickly creates REST mocks for your Cypress tests
 
+- 📝 read the blog post [Rest Easy](https://glebbahmutov.com/blog/rest-easy/)
+
 ## Install
 
 ```bash
