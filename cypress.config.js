@@ -7,5 +7,6 @@ module.exports = defineConfig({
       // implement node event listeners here
       // and load any plugins that require the Node environment
     },
+    defaultBrowser: 'electron',
   },
 })

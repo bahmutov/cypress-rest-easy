@@ -65,11 +65,9 @@ it('adds a todo', { rest: { todos: 'todos.json' } }, () => {
 You need `cy.then` to access the changed data _after_ Cypress commands have finished. Alternatively, you can wrap the array reference:
 
 ```js
-cy.get('input.new-todo')
-  .type('Write tests{enter}')
+cy.get('input.new-todo').type('Write tests{enter}')
 // there should be one more item in the array
-cy.wrap(todos)
-  .should('have.length', n + 1)
+cy.wrap(todos).should('have.length', n + 1)
 ```
 
 ### baseUrl
@@ -84,6 +82,14 @@ describe(
 ```
 
 ![Base URL option routes](./images/base-url.png)
+
+### assignId
+
+Typically, the backend creates new `id` for each `POST /resource` call that does not send the `id` property. You can create UUID values automatically:
+
+```js
+{ rest: { assignId: true, todos: 'todos.json' } }
+```
 
 ## Small print
 
