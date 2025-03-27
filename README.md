@@ -102,6 +102,10 @@ You can also pass your own synchronous function to return an id
 }
 ```
 
+## See also
+
+- plugin [cypress-magic-backend](https://github.com/bahmutov/cypress-magic-backend)
+
 ## Small print
 
 Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2025
