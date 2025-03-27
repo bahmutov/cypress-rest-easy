@@ -5,9 +5,12 @@ beforeEach(function prepareRestApi() {
   }
 
   const baseUrl = rest.baseUrl || ''
+  const assignId = rest.assignId || false
+
+  const optionNames = ['baseUrl', 'assignId']
 
   Cypress._.each(rest, (fixtureName, resourceName) => {
-    if (resourceName === 'baseUrl') {
+    if (optionNames.includes(resourceName)) {
       // skip system options
       return
     }
@@ -41,8 +44,11 @@ beforeEach(function prepareRestApi() {
 
       // POST resources
       cy.intercept('POST', resourcePrefix, (req) => {
-        const item = req.body
+        const item = structuredClone(req.body)
         // modify the id?
+        if (assignId && !('id' in item)) {
+          item.id = crypto.randomUUID()
+        }
         data.push(item)
         req.reply(201, item)
       }).as(`post${resourceNameCapitalized}`)
