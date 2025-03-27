@@ -19,7 +19,14 @@ beforeEach(function prepareRestApi() {
       ? `${baseUrl}/${resourceName}`
       : resourceName
 
-    cy.fixture(fixtureName).then((data) => {
+    const loadData = Array.isArray(fixtureName)
+      ? // the backend resource is an array of items
+        // make a copy to avoid one test mutating the data
+        // needed by another test
+        cy.wrap(structuredClone(fixtureName), { log: false })
+      : cy.fixture(fixtureName, { log: false })
+
+    loadData.then((data) => {
       // store the reference to the data in the Cypress env object
       Cypress.env(resourceName, data)
 

@@ -42,7 +42,26 @@ The fixture file should be an array of items.
 
 See [todos.cy.js](./cypress/e2e/todos.cy.js) and [todos.json](./cypress/fixtures/todos.json) for examples
 
-The mocks and data are reset before each test.
+The mocks and data are automatically reset before each test.
+
+You can use simply array for the resource
+
+```js
+{
+  rest: {
+    assignId: true,
+    todos: [
+      {
+        id: '101-102-103',
+        title: 'First item',
+        completed: true,
+      },
+    ],
+  },
+}
+```
+
+See the spec file [list-as-resource.cy.js](./cypress/e2e/list-as-resource.cy.js)
 
 ### data access
 
