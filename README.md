@@ -91,6 +91,17 @@ Typically, the backend creates new `id` for each `POST /resource` call that does
 { rest: { assignId: true, todos: 'todos.json' } }
 ```
 
+You can also pass your own synchronous function to return an id
+
+```js
+{
+  rest: {
+    assignId: () => '123-abc',
+    todos: 'todos.json',
+  },
+}
+```
+
 ## Small print
 
 Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2025

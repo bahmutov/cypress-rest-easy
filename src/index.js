@@ -47,7 +47,13 @@ beforeEach(function prepareRestApi() {
         const item = structuredClone(req.body)
         // modify the id?
         if (assignId && !('id' in item)) {
-          item.id = crypto.randomUUID()
+          if (assignId === true) {
+            item.id = crypto.randomUUID()
+          } else if (typeof assignId === 'function') {
+            item.id = assignId()
+          } else {
+            throw new Error('assignId has invalid value')
+          }
         }
         data.push(item)
         req.reply(201, item)
