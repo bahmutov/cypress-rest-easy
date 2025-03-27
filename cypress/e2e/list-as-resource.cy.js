@@ -30,6 +30,17 @@ describe(
         .should('contain', 'First item')
         .and('have.attr', 'data-todo-id', '101-102-103')
         .and('have.class', 'completed')
+
+      cy.step('Add a new item')
+      cy.get('input.new-todo').type('Buy milk{enter}')
+
+      cy.get('li.todo').should('have.length', 2)
+      cy.get('li.todo').last().should('contain', 'Buy milk')
+    })
+
+    it('shows the original list', () => {
+      cy.get('li.todo').should('have.length', 1)
+      cy.get('li.todo').first().should('contain', 'First item')
     })
   },
 )

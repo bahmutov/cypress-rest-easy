@@ -20,7 +20,10 @@ beforeEach(function prepareRestApi() {
       : resourceName
 
     const loadData = Array.isArray(fixtureName)
-      ? cy.wrap(fixtureName, { log: false })
+      ? // the backend resource is an array of items
+        // make a copy to avoid one test mutating the data
+        // needed by another test
+        cy.wrap(structuredClone(fixtureName), { log: false })
       : cy.fixture(fixtureName, { log: false })
 
     loadData.then((data) => {
