@@ -3,6 +3,7 @@
 > Quickly creates REST mocks for your Cypress tests
 
 - 📝 read the blog post [Rest Easy](https://glebbahmutov.com/blog/rest-easy/)
+- 📝 read the blog post [Rest Easy Example](https://glebbahmutov.com/blog/rest-easy-example/)
 - 📺 watch the video [cypress-rest-easy Plugin Introduction](https://youtu.be/kbLHAc6VeFA)
 
 ## Install
